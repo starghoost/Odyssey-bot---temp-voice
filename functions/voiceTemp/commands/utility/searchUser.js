@@ -19,10 +19,10 @@ const { getDb } = require('../../../../database/mysql');
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName('search') // ✅ translated command name
+    .setName('search') 
     .setDescription('Find out which voice channel a user is connected to.')
     .addUserOption(option =>
-      option.setName('user') // ✅ translated option name
+      option.setName('user') 
         .setDescription('User you want to search for')
         .setRequired(true)
     ),
