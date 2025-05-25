@@ -14,14 +14,14 @@ module.exports = {
     .setName('kick')
     .setDescription('Kicks a user from your temporary voice channel.')
     .addUserOption(option =>
-      option.setName('user') // ✅ translated parameter
+      option.setName('user') 
         .setDescription('User to kick')
         .setRequired(true)
     ),
 
   async execute(interaction) {
     const member = interaction.member;
-    const userToKick = interaction.options.getUser('user'); // ✅ updated usage
+    const userToKick = interaction.options.getUser('user'); 
     const voiceChannel = member.voice.channel;
 
     // Check if user is in a voice channel
