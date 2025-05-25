@@ -10,7 +10,7 @@ const { getDb } = require('../../../database/mysql');
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName('active_channels') // ✅ translated command name
+    .setName('active_channels') 
     .setDescription('Displays a list of active temporary voice channels (admins only).'),
 
   async execute(interaction) {
