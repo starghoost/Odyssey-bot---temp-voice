@@ -8,7 +8,7 @@ const fs = require('fs');
 const path = require('path');
 const { connectToDatabase, getDb } = require('./database/mysql');
 
-// Initialize Discord client with required intents and partials
+// Create a new Discord client with required intents to access guilds, messages, and voice states
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -21,21 +21,21 @@ const client = new Client({
 
 client.commands = new Collection();
 
-// Load voice channel event listeners
+// Import voice channel-related event handlers
 const autoDelete = require('./functions/voiceTemp/events/autoDeleteChannel');
 const voiceCreateTemp = require('./functions/voiceTemp/events/voiceCreateTemp');
 const voiceBanGuard = require('./functions/voiceTemp/events/voiceBanGuard');
 const joinChannelButton = require('./functions/voiceTemp/commands/utility/searchUser');
 const buttonRouter = require('./functions/voiceTemp/commands/menu/buttonRouter');
 
-// Handle voiceStateUpdate events
+// Hook voice state updates to the appropriate handlers
 client.on('voiceStateUpdate', async (...args) => {
   await voiceCreateTemp.execute(...args);
   await autoDelete.execute(...args);
   await voiceBanGuard.execute(...args);
 });
 
-// Recursively load all slash commands from the functions directory
+// Recursively load all slash commands in the functions folder
 function loadCommandsRecursively(dir) {
   const entries = fs.readdirSync(dir, { withFileTypes: true });
   for (const entry of entries) {
@@ -55,9 +55,9 @@ function loadCommandsRecursively(dir) {
 const commands = [];
 loadCommandsRecursively(path.join(__dirname, 'functions'));
 
-// When the bot is ready
+// When the bot becomes ready
 client.once('ready', async () => {
-  // Auto-cleanup of non-existent channels from database every 1 minute
+  // Clean up orphaned database entries and empty channels every minute
   setInterval(async () => {
     const db = getDb();
     const [records] = await db.execute('SELECT guild_id, channel_id FROM base_channels');
@@ -95,14 +95,13 @@ client.once('ready', async () => {
         console.log(`🗑 Temp voice channel ${voiceChannel.id} deleted (was empty).`);
       }
     }
-  }, 1 * 60 * 1000); // every 1 minute
+  }, 1 * 60 * 1000);
 
   console.log(`Logged in as ${client.user.tag}`);
 
-  // Establish MySQL connection
   await connectToDatabase();
 
-  // Register slash commands per guild
+  // Register slash commands for all guilds
   const CLIENT_ID = client.user.id;
   const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
 
@@ -119,7 +118,20 @@ client.once('ready', async () => {
   }
 });
 
-// Handle command and component interactions
+// Register commands automatically when the bot joins a new guild
+client.on('guildCreate', async (guild) => {
+  const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
+  try {
+    await rest.put(Routes.applicationGuildCommands(client.user.id, guild.id), {
+      body: commands
+    });
+    console.log(`✅ Commands registered in new guild ${guild.id}`);
+  } catch (error) {
+    console.error(`❌ Error registering commands in new guild ${guild.id}:`, error);
+  }
+});
+
+// Handle slash commands and button/menu interactions
 client.on('interactionCreate', async interaction => {
   if (interaction.isChatInputCommand()) {
     const command = client.commands.get(interaction.commandName);
@@ -141,5 +153,5 @@ client.on('interactionCreate', async interaction => {
   }
 });
 
-// Start the bot
+// Start the bot by logging in
 client.login(process.env.TOKEN);
