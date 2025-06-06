@@ -27,6 +27,10 @@ functions/
 │   │   └── utility/           # Helper commands like help and search
 │   ├── events/                # Voice state event listeners
 │   └── ...                    # Utility handlers (autoDelete, claim, etc.)
+lang/
+├── tempovoice/               # Translation files for the temp voice module
+│   ├── en.json
+│   └── es.json
 database/
 ├── mysql.js                   # MySQL connection and schema loader
 ├── schema.sql                 # Database schema definition

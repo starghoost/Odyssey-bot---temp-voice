@@ -21,7 +21,7 @@ module.exports = {
     const channel = member.voice?.channel;
 
     if (!channel) {
-      return interaction.reply({ content: 'You must be in a voice channel to use this feature.', ephemeral: true });
+      return interaction.reply({ content: await t(interaction.guildId, 'You must be in a voice channel to use this feature.'), ephemeral: true });
     }
 
     const db = getDb();
@@ -31,7 +31,7 @@ module.exports = {
     );
 
     if (!rows.length || rows[0].owner_id !== member.id) {
-      return interaction.reply({ content: 'Only the owner of the channel can change its privacy settings.', ephemeral: true });
+      return interaction.reply({ content: await t(interaction.guildId, 'Only the owner of the channel can change its privacy settings.'), ephemeral: true });
     }
 
     const isPrivate = rows[0].privacy === 1;
@@ -64,10 +64,10 @@ module.exports = {
       }
     } catch (err) {
       console.error('Error updating channel permissions:', err);
-      return interaction.reply({ content: 'An error occurred while updating permissions.', ephemeral: true });
+      return interaction.reply({ content: await t(interaction.guildId, 'An error occurred while updating permissions.'), ephemeral: true });
     }
 
     const stateLabel = newPrivacy === 1 ? '🔒 private' : '🌐 public';
-    return interaction.reply({ content: `The channel is now ${stateLabel}.`, ephemeral: true });
+    return interaction.reply({ content: await t(interaction.guildId, 'The channel is now {state}.', { state: stateLabel }), ephemeral: true });
   }
 };

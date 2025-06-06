@@ -54,3 +54,10 @@ CREATE TABLE admin_roles (
   role_id VARCHAR(32),
   PRIMARY KEY (guild_id, role_id)
 );
+
+-- Table: guild_settings
+-- Stores per-guild configuration like language
+CREATE TABLE IF NOT EXISTS guild_settings (
+  guild_id VARCHAR(32) PRIMARY KEY,
+  language VARCHAR(10) DEFAULT 'en'
+);

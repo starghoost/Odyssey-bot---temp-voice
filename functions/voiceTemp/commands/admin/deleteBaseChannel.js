@@ -60,9 +60,9 @@ module.exports = {
     }
 
     // Confirm the deletion to the user
-    return interaction.reply({ 
-      content: `The base channel **${channel.name}** has been deleted.`, 
-      ephemeral: true 
+    return interaction.reply({
+      content: await t(interaction.guildId, 'The base channel **{name}** has been deleted.', { name: channel.name }),
+      ephemeral: true
     });
   }
 };

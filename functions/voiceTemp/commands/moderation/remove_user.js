@@ -6,6 +6,7 @@
  */
 
 const { SlashCommandBuilder } = require('discord.js');
+const { t } = require('./../../../utils/translator');
 const { getDb } = require('../../../../database/mysql');
 
 module.exports = {
@@ -25,7 +26,7 @@ module.exports = {
 
     // Ensure user is in a voice channel
     if (!channel) {
-      return interaction.reply({ content: 'You must be in a private channel to use this command.', ephemeral: true });
+      return interaction.reply({ content: await t(interaction.guildId, 'You must be in a private channel to use this command.'), ephemeral: true });
     }
 
     const db = getDb();
@@ -36,7 +37,7 @@ module.exports = {
 
     // Only the owner of a private channel can remove users
     if (!rows.length || rows[0].owner_id !== member.id || rows[0].privacy !== 1) {
-      return interaction.reply({ content: 'You can only remove users from a private channel that you own.', ephemeral: true });
+      return interaction.reply({ content: await t(interaction.guildId, 'You can only remove users from a private channel that you own.'), ephemeral: true });
     }
 
     // Remove from whitelist
@@ -52,9 +53,9 @@ module.exports = {
       console.error('Error revoking user permissions:', err);
     }
 
-    return interaction.reply({ 
-      content: `User **${userToRemove.tag}** no longer has access to your channel.`, 
-      ephemeral: true 
+    return interaction.reply({
+      content: await t(interaction.guildId, 'User **{user}** no longer has access to your channel.', { user: userToRemove.tag }),
+      ephemeral: true
     });
   }
 };

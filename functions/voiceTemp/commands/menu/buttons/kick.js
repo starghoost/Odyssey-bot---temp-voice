@@ -6,6 +6,7 @@
  */
 
 const { ActionRowBuilder, UserSelectMenuBuilder, PermissionFlagsBits } = require('discord.js');
+const { t } = require('./../../../../utils/translator');
 const { getDb } = require('../../../../../database/mysql');
 
 module.exports = {
@@ -23,13 +24,13 @@ module.exports = {
     if (interaction.isButton()) {
       const channel = member.voice?.channel;
       if (!channel) {
-        return interaction.reply({ content: 'You must be in a voice channel to use this option.', ephemeral: true });
+        return interaction.reply({ content: await t(interaction.guildId, 'You must be in a voice channel to use this option.'), ephemeral: true });
       }
 
       const db = getDb();
       const [rows] = await db.execute('SELECT owner_id FROM temp_channels WHERE temp_channel_id = ?', [channel.id]);
       if (!rows.length || rows[0].owner_id !== member.id) {
-        return interaction.reply({ content: 'Only the owner of the channel can kick users.', ephemeral: true });
+        return interaction.reply({ content: await t(interaction.guildId, 'Only the owner of the channel can kick users.'), ephemeral: true });
       }
 
       const row = new ActionRowBuilder().addComponents(
@@ -41,7 +42,7 @@ module.exports = {
       );
 
       return interaction.reply({ 
-        content: 'Select the user you want to kick:', 
+        content: await t(interaction.guildId, 'Select the user you want to kick:'), 
         components: [row], 
         ephemeral: true 
       });
@@ -56,20 +57,20 @@ module.exports = {
       const channel = member.voice?.channel;
 
       if (!target || !channel) {
-        return interaction.reply({ content: 'Invalid user or channel not available.', ephemeral: true });
+        return interaction.reply({ content: await t(interaction.guildId, 'Invalid user or channel not available.'), ephemeral: true });
       }
 
       const db = getDb();
       const [rows] = await db.execute('SELECT owner_id FROM temp_channels WHERE temp_channel_id = ?', [channel.id]);
       if (!rows.length || rows[0].owner_id !== member.id) {
-        return interaction.reply({ content: 'You do not have permission to perform this action.', ephemeral: true });
+        return interaction.reply({ content: await t(interaction.guildId, 'You do not have permission to perform this action.'), ephemeral: true });
       }
 
       const [roles] = await db.execute('SELECT role_id FROM admin_roles WHERE guild_id = ?', [guild.id]);
       const adminRoles = roles.map(r => r.role_id);
       const hasAdminRole = target.roles.cache.some(role => adminRoles.includes(role.id));
       if (hasAdminRole || target.permissions.has(PermissionFlagsBits.Administrator)) {
-        return interaction.reply({ content: 'You cannot kick an administrator or a user with administrative roles.', ephemeral: true });
+        return interaction.reply({ content: await t(interaction.guildId, 'You cannot kick an administrator or a user with administrative roles.'), ephemeral: true });
       }
 
       if (target.voice.channelId === channel.id) {
@@ -77,9 +78,9 @@ module.exports = {
       }
 
       await interaction.deferUpdate();
-      return interaction.followUp({ 
-        content: `User **${target.user.tag}** has been kicked from the channel.`, 
-        ephemeral: true 
+      return interaction.followUp({
+        content: await t(interaction.guildId, 'User **{user}** has been kicked from the channel.', { user: target.user.tag }),
+        ephemeral: true
       });
     }
   }

@@ -6,6 +6,7 @@
  */
 
 const { SlashCommandBuilder, PermissionsBitField } = require('discord.js');
+const { t } = require('./../../../utils/translator');
 const { getDb } = require('../../../../database/mysql');
 
 module.exports = {
@@ -45,7 +46,7 @@ module.exports = {
       const hasAdminRole = member.roles.cache.some(role => adminRoleIDs.includes(role.id));
 
       if (!hasAdminRole) {
-        return interaction.reply({ content: 'You do not have permission to use this command.', ephemeral: true });
+        return interaction.reply({ content: await t(interaction.guildId, 'You do not have permission to use this command.'), ephemeral: true });
       }
     }
 
@@ -53,14 +54,14 @@ module.exports = {
     const [rows] = await db.execute('SELECT * FROM base_channels WHERE channel_id = ?', [channel.id]);
 
     if (!rows.length) {
-      return interaction.reply({ content: '❌ This channel is not registered as a base channel.', ephemeral: true });
+      return interaction.reply({ content: await t(interaction.guildId, '❌ This channel is not registered as a base channel.'), ephemeral: true });
     }
 
     // Try renaming the channel in Discord
     try {
       await channel.setName(newName);
     } catch (err) {
-      return interaction.reply({ content: '❌ Failed to rename the channel on Discord.', ephemeral: true });
+      return interaction.reply({ content: await t(interaction.guildId, '❌ Failed to rename the channel on Discord.'), ephemeral: true });
     }
 
     // Update the stored name in the database
@@ -69,9 +70,9 @@ module.exports = {
       [newName, channel.id]
     );
 
-    return interaction.reply({ 
-      content: `✅ The base channel has been renamed to **${newName}**.`, 
-      ephemeral: true 
+    return interaction.reply({
+      content: await t(interaction.guildId, '✅ The base channel has been renamed to **{name}**.', { name: newName }),
+      ephemeral: true
     });
   }
 };

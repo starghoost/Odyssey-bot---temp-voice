@@ -57,7 +57,7 @@ module.exports = {
       if (interaction.deferred || interaction.replied) {
         await interaction.deleteReply().catch(() => {});
       } else {
-        await interaction.reply({ content: 'Menu closed.', ephemeral: true });
+        await interaction.reply({ content: await t(interaction.guildId, 'Menu closed.'), ephemeral: true });
       }
       return;
     }
@@ -65,14 +65,14 @@ module.exports = {
     // Call the corresponding handler
     const handler = handlers.get(key);
     if (!handler) {
-      return interaction.reply({ content: 'This action is not implemented yet.', ephemeral: true });
+      return interaction.reply({ content: await t(interaction.guildId, 'This action is not implemented yet.'), ephemeral: true });
     }
 
     try {
       await handler(interaction);
     } catch (error) {
       console.error(`Error handling ${key}:`, error);
-      await interaction.reply({ content: 'An error occurred while executing this action.', ephemeral: true });
+      await interaction.reply({ content: await t(interaction.guildId, 'An error occurred while executing this action.'), ephemeral: true });
     }
   }
 };

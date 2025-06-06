@@ -7,6 +7,7 @@
  */
 
 const { SlashCommandBuilder, PermissionsBitField, ChannelType } = require('discord.js');
+const { t } = require('./../../../utils/translator');
 const { getDb } = require('../../../../database/mysql');
 
 module.exports = {
@@ -44,7 +45,7 @@ module.exports = {
       const adminRoleIDs = roles.map(r => r.role_id);
       const hasAdminRole = member.roles.cache.some(role => adminRoleIDs.includes(role.id));
       if (!hasAdminRole) {
-        return interaction.reply({ content: 'You do not have permission to use this command.', ephemeral: true });
+        return interaction.reply({ content: await t(interaction.guildId, 'You do not have permission to use this command.'), ephemeral: true });
       }
     }
 
@@ -57,9 +58,9 @@ module.exports = {
       [interaction.guild.id, channel.id, limit, channel.name]
     );
 
-    return interaction.reply({ 
-      content: `✅ Channel **${channel.name}** has been registered as a base channel with a user limit of ${limit}.`, 
-      ephemeral: true 
+    return interaction.reply({
+      content: await t(interaction.guildId, '✅ Channel **{name}** has been registered as a base channel with a user limit of {limit}.', { name: channel.name, limit }),
+      ephemeral: true
     });
   }
 };

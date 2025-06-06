@@ -6,6 +6,7 @@
  */
 
 const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
+const { t } = require('./../../../utils/translator');
 const { getDb } = require('../../../../database/mysql');
 
 module.exports = {
@@ -25,7 +26,7 @@ module.exports = {
 
     // Ensure the user is connected to a voice channel
     if (!voiceChannel) {
-      return interaction.reply({ content: 'You must be in a voice channel to use this command.', ephemeral: true });
+      return interaction.reply({ content: await t(interaction.guildId, 'You must be in a voice channel to use this command.'), ephemeral: true });
     }
 
     const db = getDb();
@@ -36,14 +37,14 @@ module.exports = {
 
     // Only the owner of the temporary channel can ban
     if (!temp.length || temp[0].owner_id !== member.id) {
-      return interaction.reply({ content: 'Only the channel owner can use this command.', ephemeral: true });
+      return interaction.reply({ content: await t(interaction.guildId, 'Only the channel owner can use this command.'), ephemeral: true });
     }
 
     const memberToBan = interaction.guild.members.cache.get(userToBan.id);
 
     // Prevent banning administrators
     if (memberToBan?.permissions.has(PermissionFlagsBits.Administrator)) {
-      return interaction.reply({ content: 'You cannot block an administrator.', ephemeral: true });
+      return interaction.reply({ content: await t(interaction.guildId, 'You cannot block an administrator.'), ephemeral: true });
     }
 
     // Prevent banning members with admin roles
@@ -55,7 +56,7 @@ module.exports = {
     const adminRoles = roles.map(r => r.role_id);
     const hasAdminRole = memberToBan?.roles.cache.some(role => adminRoles.includes(role.id));
     if (hasAdminRole) {
-      return interaction.reply({ content: 'You cannot block a user with an administrative role.', ephemeral: true });
+      return interaction.reply({ content: await t(interaction.guildId, 'You cannot block a user with an administrative role.'), ephemeral: true });
     }
 
     // Add user to ban list in the database
@@ -70,7 +71,7 @@ module.exports = {
     }
 
     return interaction.reply({
-      content: `User **${userToBan.tag}** has been blocked from this channel.`,
+      content: await t(interaction.guildId, 'User **{user}** has been blocked from this channel.', { user: userToBan.tag }),
       ephemeral: true
     });
   }

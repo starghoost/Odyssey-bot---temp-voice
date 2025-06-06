@@ -55,7 +55,8 @@ async function connectToDatabase() {
       'temp_channels',
       'channel_bans',
       'admin_roles',
-      'channel_whitelist'
+      'channel_whitelist',
+      'guild_settings'
     ];
 
     // Retrieve existing tables and identify missing ones

@@ -6,6 +6,7 @@
  */
 
 const { SlashCommandBuilder } = require('discord.js');
+const { t } = require('./../../../utils/translator');
 const { getDb } = require('../../../../database/mysql');
 
 module.exports = {
@@ -19,7 +20,7 @@ module.exports = {
 
     // Must be in a temporary voice channel
     if (!channel) {
-      return interaction.reply({ content: 'You must be in a temporary channel to use this command.', ephemeral: true });
+      return interaction.reply({ content: await t(interaction.guildId, 'You must be in a temporary channel to use this command.'), ephemeral: true });
     }
 
     const db = getDb();
@@ -30,7 +31,7 @@ module.exports = {
 
     // Only the owner can make the channel private
     if (!rows.length || rows[0].owner_id !== member.id) {
-      return interaction.reply({ content: 'Only the owner of the channel can change its visibility.', ephemeral: true });
+      return interaction.reply({ content: await t(interaction.guildId, 'Only the owner of the channel can change its visibility.'), ephemeral: true });
     }
 
     // Update database privacy flag
@@ -54,9 +55,9 @@ module.exports = {
       console.error('Error updating channel permissions:', err);
     }
 
-    return interaction.reply({ 
-      content: `The channel **${channel.name}** is now private.`, 
-      ephemeral: true 
+    return interaction.reply({
+      content: await t(interaction.guildId, 'The channel **{name}** is now private.', { name: channel.name }),
+      ephemeral: true
     });
   }
 };
