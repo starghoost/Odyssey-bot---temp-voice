@@ -9,6 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const { getMenuRows } = require('./buttons/_menuLayout');
 const { getMenuEmbed } = require('./menu');
+const { t } = require('../../../utils/translator');
 
 const handlers = new Map();
 const buttonsPath = path.join(__dirname, 'buttons');
@@ -47,7 +48,7 @@ module.exports = {
     if (key.startsWith('menu_page:')) {
       const page = parseInt(key.split(':')[1]);
       const [row1, row2] = getMenuRows(page);
-      const embed = getMenuEmbed(page);
+      const embed = await getMenuEmbed(interaction.guildId, page);
       embed.setThumbnail(interaction.guild.iconURL({ dynamic: true }));
       return interaction.update({ embeds: [embed], components: [row1, row2] });
     }

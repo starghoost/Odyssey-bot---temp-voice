@@ -7,6 +7,7 @@
 
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { getMenuRows } = require('./buttons/_menuLayout');
+const { t } = require('../../../utils/translator');
 
 /**
  * Builds the main embed that shows the control options available in the interactive panel.
@@ -14,23 +15,23 @@ const { getMenuRows } = require('./buttons/_menuLayout');
  * @param {number} page - Page number of the menu (1 or 2)
  * @returns {EmbedBuilder} The embed to display
  */
-function getMenuEmbed(page = 1) {
+async function getMenuEmbed(guildId, page = 1) {
   const embed = new EmbedBuilder()
     .setColor('#5865F2')
     .setThumbnail(null)
-    .setFooter({ text: 'Temporary Voice Channel Management System' });
+    .setFooter({ text: await t(guildId, 'Temporary Voice Channel Management System') });
 
   if (page === 1) {
-    embed.setTitle('🎛️ Temporary Channel Control Panel')
+    embed.setTitle(await t(guildId, '🎛️ Temporary Channel Control Panel'))
       .setDescription(
-        '`🔤` Rename    `🔐` Privacy    `👑` Claim     `➡️` Next page\n' +
-        '`🚫` Ban            `⚔️` Kick        `✅` Unban      `✖️` Close menu'
+        `\`🔤\` ${await t(guildId, 'Rename')}    \`🔐\` ${await t(guildId, 'Privacy')}    \`👑\` ${await t(guildId, 'Claim')}     \`➡️\` ${await t(guildId, 'Next page')}\n` +
+        `\`🚫\` ${await t(guildId, 'Ban')}            \`⚔️\` ${await t(guildId, 'Kick')}        \`✅\` ${await t(guildId, 'Unban')}      \`✖️\` ${await t(guildId, 'Close menu')}`
       );
   } else if (page === 2) {
-    embed.setTitle('🎛️ Advanced Channel Options')
+    embed.setTitle(await t(guildId, '🎛️ Advanced Channel Options'))
       .setDescription(
-        '`🔇` Mute    `🔊` Unmute        `🙉` Deafen      `👂` Undeafen\n' +
-        '`⬅️` Back       `🔍` Search user   `✖️` Close menu'
+        `\`🔇\` ${await t(guildId, 'Mute')}    \`🔊\` ${await t(guildId, 'Unmute')}        \`🙉\` ${await t(guildId, 'Deafen')}      \`👂\` ${await t(guildId, 'Undeafen')}\n` +
+        `\`⬅️\` ${await t(guildId, 'Back')}       \`🔍\` ${await t(guildId, 'Search user')}   \`✖️\` ${await t(guildId, 'Close menu')}`
       );
   }
 
@@ -50,7 +51,7 @@ module.exports = {
   async execute(interaction) {
     const page = 1;
     const [row1, row2] = getMenuRows(page);
-    const embed = getMenuEmbed(page);
+    const embed = await getMenuEmbed(interaction.guildId, page);
     embed.setThumbnail(interaction.guild.iconURL({ dynamic: true }));
 
     return interaction.reply({
