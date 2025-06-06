@@ -7,6 +7,7 @@
  */
 
 const { getDb } = require('../../../../../database/mysql');
+const { t } = require('./../../../../utils/translator');
 
 module.exports = {
   id: 'privacy_toggle',

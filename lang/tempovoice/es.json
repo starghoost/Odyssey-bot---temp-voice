@@ -1,16 +1,26 @@
 {
+  // Generic errors
   "You do not have permission to use this command.": "No tienes permiso para usar este comando.",
   "🚫 You cannot access this channel because you have been blocked by its owner.": "🚫 No puedes acceder a este canal porque el propietario te bloqueó.",
   "Menu closed.": "Menú cerrado.",
   "Only the owner of the channel can rename it.": "Solo el dueño del canal puede cambiarle el nombre.",
+  // Transfer ownership
   "Select the new owner of the channel:": "Selecciona el nuevo dueño del canal:",
+  // Ban
   "Select the user you want to block:": "Selecciona al usuario que quieres bloquear:",
+  // Deafen
   "Select the user you want to deafen:": "Selecciona al usuario que quieres ensordecer:",
+  // Kick
   "Select the user you want to kick:": "Selecciona al usuario que quieres expulsar:",
+  // Search user
   "Select the user you want to locate:": "Selecciona al usuario que quieres ubicar:",
+  // Mute
   "Select the user you want to mute:": "Selecciona al usuario que quieres silenciar:",
+  // Undeafen
   "Select the user you want to undeafen:": "Selecciona al usuario que quieres quitarle el ensordecimiento:",
+  // Unmute
   "Select the user you want to unmute:": "Selecciona al usuario que quieres desilenciar:",
+  // Claim channel
   "You must be connected to a voice channel to claim it.": "Debes estar conectado a un canal de voz para reclamarlo.",
   "You must be in a voice channel to use this command.": "Debes estar en un canal de voz para usar este comando.",
   "An error occurred while renaming the channel": "Ocurrió un error al renombrar el canal",
@@ -82,21 +92,37 @@
   "The base channel **{name}** has been deleted.": "El canal base **{name}** ha sido eliminado.",
   "Channel renamed to **{name}**.": "Canal renombrado a **{name}**.",
   "The channel is now {state}.": "El canal ahora es {state}.",
+  // Ban result
   "User **{user}** has been blocked from the channel.": "El usuario **{user}** ha sido bloqueado del canal.",
+  // Claim success
   "You are now the owner of the channel **{name}**.": "Ahora eres el dueño del canal **{name}**.",
+  // Unmute result
   "User **{user}** has been unmuted.": "El usuario **{user}** ha sido desilenciado.",
+  // Mute result
   "User **{user}** has been muted.": "El usuario **{user}** ha sido silenciado.",
+  // Speak again
   "User **{user}** can now speak again.": "El usuario **{user}** puede hablar de nuevo.",
+  // Kick result
   "User **{user}** has been kicked from the channel.": "El usuario **{user}** ha sido expulsado del canal.",
+  // Deafen result
   "User **{user}** has been deafened.": "El usuario **{user}** ha sido ensordecido.",
+  // Transfer result
   "You have transferred ownership of the channel to **{user}**.": "Has transferido la propiedad del canal a **{user}**.",
+  // Channel created
   "The channel **{name}** has been created.": "El canal **{name}** ha sido creado.",
+  // Undeafen result
   "User **{user}** can now hear again.": "El usuario **{user}** puede oír de nuevo.",
+  // Privacy toggle
   "The channel **{name}** is now private.": "El canal **{name}** ahora es privado.",
+  // Privacy toggle
   "The channel **{name}** is now public.": "El canal **{name}** ahora es público.",
+  // Unban result
   "User **{user}** can now join your channel.": "El usuario **{user}** ahora puede unirse a tu canal.",
+  // Ban confirmation
   "User **{user}** has been blocked from this channel.": "El usuario **{user}** ha sido bloqueado de este canal.",
+  // Remove user
   "User **{user}** no longer has access to your channel.": "El usuario **{user}** ya no tiene acceso a tu canal."
+  // Menu labels
   ,"Temporary Voice Channel Management System": "Sistema de Gestión de Canales de Voz Temporales",
   "🎛️ Temporary Channel Control Panel": "🎛️ Panel de Control de Canales Temporales",
   "Rename": "Renombrar",
@@ -114,6 +140,7 @@
   "Undeafen": "Quitar ensordecimiento",
   "Back": "Atrás",
   "Search user": "Buscar usuario",
+  // Help command
   "📖 Help - Temporary Voice Channels": "📖 Ayuda - Canales de Voz Temporales",
   "Here is a list of useful commands to manage your temporary voice channel:": "Aquí hay una lista de comandos útiles para manejar tu canal de voz temporal:",
   "Grants a user access to your private voice channel.": "Concede a un usuario acceso a tu canal de voz privado.",

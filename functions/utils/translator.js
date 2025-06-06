@@ -2,14 +2,19 @@ const fs = require('fs');
 const path = require('path');
 const { getDb } = require('../../database/mysql');
 
-// Load translation files for the temp voice module
+// Helper to load JSON files that may contain comments
+function loadJsonWithComments(filePath) {
+  let content = fs.readFileSync(filePath, 'utf8');
+  content = content
+    .replace(/\/\*[\s\S]*?\*\//g, '') // remove /* */ comments
+    .replace(/\/\/.*$/gm, ''); // remove // comments
+  return JSON.parse(content);
+}
+
+// Load translation files for the temp voice module (supports comments)
 const locales = {
-  en: JSON.parse(
-    fs.readFileSync(path.join(__dirname, '../../lang/tempovoice/en.json'))
-  ),
-  es: JSON.parse(
-    fs.readFileSync(path.join(__dirname, '../../lang/tempovoice/es.json'))
-  )
+  en: loadJsonWithComments(path.join(__dirname, '../../lang/tempovoice/en.json')),
+  es: loadJsonWithComments(path.join(__dirname, '../../lang/tempovoice/es.json'))
 };
 
 async function getGuildLanguage(guildId) {

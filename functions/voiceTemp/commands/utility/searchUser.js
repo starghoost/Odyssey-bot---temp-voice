@@ -16,6 +16,7 @@ const {
 } = require('discord.js');
 
 const { getDb } = require('../../../../database/mysql');
+const { t } = require('../../../utils/translator');
 
 module.exports = {
   data: new SlashCommandBuilder()

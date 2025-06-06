@@ -79,7 +79,7 @@ async function connectToDatabase() {
         );
 
       for (const stmt of statements) {
-        const match = stmt.match(/CREATE TABLE\s+(\w+)/i);
+        const match = stmt.match(/CREATE TABLE(?: IF NOT EXISTS)?\s+(\w+)/i);
         if (match) {
           const tableName = match[1].toLowerCase();
           if (missingTables.includes(tableName)) {

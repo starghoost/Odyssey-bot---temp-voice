@@ -1,16 +1,26 @@
 {
+  // Generic errors
   "You do not have permission to use this command.": "You do not have permission to use this command.",
   "🚫 You cannot access this channel because you have been blocked by its owner.": "🚫 You cannot access this channel because you have been blocked by its owner.",
   "Menu closed.": "Menu closed.",
   "Only the owner of the channel can rename it.": "Only the owner of the channel can rename it.",
+  // Transfer ownership
   "Select the new owner of the channel:": "Select the new owner of the channel:",
+  // Ban
   "Select the user you want to block:": "Select the user you want to block:",
+  // Deafen
   "Select the user you want to deafen:": "Select the user you want to deafen:",
+  // Kick
   "Select the user you want to kick:": "Select the user you want to kick:",
+  // Search user
   "Select the user you want to locate:": "Select the user you want to locate:",
+  // Mute
   "Select the user you want to mute:": "Select the user you want to mute:",
+  // Undeafen
   "Select the user you want to undeafen:": "Select the user you want to undeafen:",
+  // Unmute
   "Select the user you want to unmute:": "Select the user you want to unmute:",
+  // Claim channel
   "You must be connected to a voice channel to claim it.": "You must be connected to a voice channel to claim it.",
   "You must be in a voice channel to use this command.": "You must be in a voice channel to use this command.",
   "An error occurred while renaming the channel": "An error occurred while renaming the channel",
@@ -82,21 +92,36 @@
   "The base channel **{name}** has been deleted.": "The base channel **{name}** has been deleted.",
   "Channel renamed to **{name}**.": "Channel renamed to **{name}**.",
   "The channel is now {state}.": "The channel is now {state}.",
+  // Ban result
   "User **{user}** has been blocked from the channel.": "User **{user}** has been blocked from the channel.",
+  // Claim success
   "You are now the owner of the channel **{name}**.": "You are now the owner of the channel **{name}**.",
+  // Unmute result
   "User **{user}** has been unmuted.": "User **{user}** has been unmuted.",
+  // Mute result
   "User **{user}** has been muted.": "User **{user}** has been muted.",
+  // Speak again
   "User **{user}** can now speak again.": "User **{user}** can now speak again.",
+  // Kick result
   "User **{user}** has been kicked from the channel.": "User **{user}** has been kicked from the channel.",
+  // Deafen result
   "User **{user}** has been deafened.": "User **{user}** has been deafened.",
+  // Transfer result
   "You have transferred ownership of the channel to **{user}**.": "You have transferred ownership of the channel to **{user}**.",
+  // Channel created
   "The channel **{name}** has been created.": "The channel **{name}** has been created.",
+  // Undeafen result
   "User **{user}** can now hear again.": "User **{user}** can now hear again.",
+  // Privacy toggle
   "The channel **{name}** is now private.": "The channel **{name}** is now private.",
   "The channel **{name}** is now public.": "The channel **{name}** is now public.",
+  // Unban result
   "User **{user}** can now join your channel.": "User **{user}** can now join your channel.",
+  // Ban confirmation
   "User **{user}** has been blocked from this channel.": "User **{user}** has been blocked from this channel.",
+  // Remove user
   "User **{user}** no longer has access to your channel.": "User **{user}** no longer has access to your channel."
+  // Menu labels
   ,"Temporary Voice Channel Management System": "Temporary Voice Channel Management System",
   "🎛️ Temporary Channel Control Panel": "🎛️ Temporary Channel Control Panel",
   "Rename": "Rename",
@@ -114,6 +139,7 @@
   "Undeafen": "Undeafen",
   "Back": "Back",
   "Search user": "Search user",
+  // Help command
   "📖 Help - Temporary Voice Channels": "📖 Help - Temporary Voice Channels",
   "Here is a list of useful commands to manage your temporary voice channel:": "Here is a list of useful commands to manage your temporary voice channel:",
   "Grants a user access to your private voice channel.": "Grants a user access to your private voice channel.",
