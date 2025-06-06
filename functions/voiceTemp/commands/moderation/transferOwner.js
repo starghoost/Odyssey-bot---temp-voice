@@ -6,6 +6,7 @@
  */
 
 const { SlashCommandBuilder } = require('discord.js');
+const { t } = require('./../../../utils/translator');
 const { getDb } = require('../../../../database/mysql');
 
 module.exports = {
@@ -25,7 +26,7 @@ module.exports = {
 
     // Must be connected to a voice channel
     if (!channel) {
-      return interaction.reply({ content: 'You must be in a voice channel to transfer ownership.', ephemeral: true });
+      return interaction.reply({ content: await t(interaction.guildId, 'You must be in a voice channel to transfer ownership.'), ephemeral: true });
     }
 
     const db = getDb();
@@ -36,7 +37,7 @@ module.exports = {
 
     // Only the current owner can transfer ownership
     if (!result.length || result[0].owner_id !== member.id) {
-      return interaction.reply({ content: 'Only the channel owner can transfer ownership.', ephemeral: true });
+      return interaction.reply({ content: await t(interaction.guildId, 'Only the channel owner can transfer ownership.'), ephemeral: true });
     }
 
     // Update the database record
@@ -56,9 +57,9 @@ module.exports = {
     // Remove previous owner's permissions
     await channel.permissionOverwrites.delete(member.id);
 
-    return interaction.reply({ 
-      content: `You have transferred ownership of the channel to **${newOwner.tag}**.`, 
-      ephemeral: true 
+    return interaction.reply({
+      content: await t(interaction.guildId, 'You have transferred ownership of the channel to **{user}**.', { user: newOwner.tag }),
+      ephemeral: true
     });
   }
 };

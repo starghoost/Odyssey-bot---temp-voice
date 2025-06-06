@@ -6,6 +6,7 @@
  */
 
 const { ActionRowBuilder, UserSelectMenuBuilder } = require('discord.js');
+const { t } = require('./../../../../utils/translator');
 const { getDb } = require('../../../../../database/mysql');
 
 module.exports = {
@@ -24,7 +25,7 @@ module.exports = {
     if (interaction.isButton()) {
       const channel = member.voice?.channel;
       if (!channel) {
-        return interaction.reply({ content: 'You must be in a voice channel to unmute someone.', ephemeral: true });
+        return interaction.reply({ content: await t(interaction.guildId, 'You must be in a voice channel to unmute someone.'), ephemeral: true });
       }
 
       const db = getDb();
@@ -34,12 +35,12 @@ module.exports = {
       );
 
       if (!rows.length || rows[0].owner_id !== member.id) {
-        return interaction.reply({ content: 'Only the channel owner can unmute users.', ephemeral: true });
+        return interaction.reply({ content: await t(interaction.guildId, 'Only the channel owner can unmute users.'), ephemeral: true });
       }
 
       const mutedMembers = channel.members.filter(m => m.voice.mute);
       if (mutedMembers.size === 0) {
-        return interaction.reply({ content: 'There are no muted users in your channel.', ephemeral: true });
+        return interaction.reply({ content: await t(interaction.guildId, 'There are no muted users in your channel.'), ephemeral: true });
       }
 
       const row = new ActionRowBuilder().addComponents(
@@ -51,7 +52,7 @@ module.exports = {
       );
 
       return interaction.reply({
-        content: 'Select the user you want to unmute:',
+        content: await t(interaction.guildId, 'Select the user you want to unmute:'),
         components: [row],
         ephemeral: true
       });
@@ -65,7 +66,7 @@ module.exports = {
       const channel = interaction.member.voice?.channel;
 
       if (!target || !channel || target.voice.channelId !== channel.id) {
-        return interaction.reply({ content: 'The user is not in your voice channel.', ephemeral: true });
+        return interaction.reply({ content: await t(interaction.guildId, 'The user is not in your voice channel.'), ephemeral: true });
       }
 
       const db = getDb();
@@ -75,13 +76,13 @@ module.exports = {
       );
 
       if (!rows.length || rows[0].owner_id !== interaction.member.id) {
-        return interaction.reply({ content: 'You do not have permission to perform this action.', ephemeral: true });
+        return interaction.reply({ content: await t(interaction.guildId, 'You do not have permission to perform this action.'), ephemeral: true });
       }
 
       await target.voice.setMute(false);
       await interaction.deferUpdate();
       return interaction.followUp({
-        content: `User **${target.user.tag}** has been unmuted.`,
+        content: await t(interaction.guildId, 'User **{user}** has been unmuted.', { user: target.user.tag }),
         ephemeral: true
       });
     }

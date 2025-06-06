@@ -6,6 +6,7 @@
  */
 
 const { ActionRowBuilder, UserSelectMenuBuilder } = require('discord.js');
+const { t } = require('./../../../../utils/translator');
 const { getDb } = require('../../../../../database/mysql');
 
 module.exports = {
@@ -25,13 +26,13 @@ module.exports = {
     if (interaction.isButton()) {
       const channel = member.voice?.channel;
       if (!channel) {
-        return interaction.reply({ content: 'You must be in a voice channel to transfer it.', ephemeral: true });
+        return interaction.reply({ content: await t(interaction.guildId, 'You must be in a voice channel to transfer it.'), ephemeral: true });
       }
 
       const db = getDb();
       const [rows] = await db.execute('SELECT owner_id FROM temp_channels WHERE temp_channel_id = ?', [channel.id]);
       if (!rows.length || rows[0].owner_id !== member.id) {
-        return interaction.reply({ content: 'Only the owner can transfer the channel.', ephemeral: true });
+        return interaction.reply({ content: await t(interaction.guildId, 'Only the owner can transfer the channel.'), ephemeral: true });
       }
 
       const row = new ActionRowBuilder().addComponents(
@@ -43,7 +44,7 @@ module.exports = {
       );
 
       return interaction.reply({
-        content: 'Select the new owner of the channel:',
+        content: await t(interaction.guildId, 'Select the new owner of the channel:'),
         components: [row],
         ephemeral: true
       });
@@ -58,13 +59,13 @@ module.exports = {
       const channel = member.voice?.channel;
 
       if (!channel || !newOwner) {
-        return interaction.reply({ content: 'Invalid user or unavailable channel.', ephemeral: true });
+        return interaction.reply({ content: await t(interaction.guildId, 'Invalid user or unavailable channel.'), ephemeral: true });
       }
 
       const db = getDb();
       const [rows] = await db.execute('SELECT owner_id FROM temp_channels WHERE temp_channel_id = ?', [channel.id]);
       if (!rows.length || rows[0].owner_id !== member.id) {
-        return interaction.reply({ content: 'You do not have permission to transfer this channel.', ephemeral: true });
+        return interaction.reply({ content: await t(interaction.guildId, 'You do not have permission to transfer this channel.'), ephemeral: true });
       }
 
       try {
@@ -84,12 +85,12 @@ module.exports = {
 
         await interaction.deferUpdate();
         return interaction.followUp({
-          content: `You have transferred ownership of the channel to **${newOwner.user.tag}**.`,
+          content: await t(interaction.guildId, 'You have transferred ownership of the channel to **{user}**.', { user: newOwner.user.tag }),
           ephemeral: true
         });
       } catch (error) {
         console.error('Error transferring channel:', error);
-        return interaction.reply({ content: 'An error occurred while transferring channel ownership.', ephemeral: true });
+        return interaction.reply({ content: await t(interaction.guildId, 'An error occurred while transferring channel ownership.'), ephemeral: true });
       }
     }
   }

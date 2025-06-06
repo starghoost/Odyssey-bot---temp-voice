@@ -24,7 +24,7 @@ module.exports = {
     // Ensure the user is connected to a voice channel
     if (!voiceChannel) {
       return interaction.reply({ 
-        content: 'You must be connected to a voice channel to claim it.', 
+        content: await t(interaction.guildId, 'You must be connected to a voice channel to claim it.'), 
         ephemeral: true 
       });
     }
@@ -38,12 +38,12 @@ module.exports = {
     if (existing.length > 0) {
       // The user already owns this channel
       if (existing[0].owner_id === member.id) {
-        return interaction.reply({ content: 'You already own this channel.', ephemeral: true });
+        return interaction.reply({ content: await t(interaction.guildId, 'You already own this channel.'), ephemeral: true });
       }
 
       // The channel has already been claimed by someone else
       if (existing[0].owner_id !== null) {
-        return interaction.reply({ content: 'This channel has already been claimed by another user.', ephemeral: true });
+        return interaction.reply({ content: await t(interaction.guildId, 'This channel has already been claimed by another user.'), ephemeral: true });
       }
 
       // Update ownership in DB
@@ -61,9 +61,9 @@ module.exports = {
       );
     }
 
-    return interaction.reply({ 
-      content: `You are now the owner of the channel **${voiceChannel.name}**.`, 
-      ephemeral: true 
+    return interaction.reply({
+      content: await t(interaction.guildId, 'You are now the owner of the channel **{name}**.', { name: voiceChannel.name }),
+      ephemeral: true
     });
   }
 };

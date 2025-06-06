@@ -6,6 +6,7 @@
  */
 
 const {ModalBuilder,TextInputBuilder,TextInputStyle,ActionRowBuilder} = require('discord.js');
+const { t } = require('./../../../../utils/translator');
 
 const { getDb } = require('../../../../../database/mysql');
 
@@ -27,7 +28,7 @@ module.exports = {
       const channel = member.voice?.channel;
 
       if (!channel) {
-        return interaction.reply({ content: 'You must be in a voice channel to rename it.', ephemeral: true });
+        return interaction.reply({ content: await t(interaction.guildId, 'You must be in a voice channel to rename it.'), ephemeral: true });
       }
 
       const db = getDb();
@@ -37,7 +38,7 @@ module.exports = {
       );
 
       if (!rows.length || rows[0].owner_id !== member.id) {
-        return interaction.reply({ content: 'Only the owner of the channel can rename it.', ephemeral: true });
+        return interaction.reply({ content: await t(interaction.guildId, 'Only the owner of the channel can rename it.'), ephemeral: true });
       }
 
       const modal = new ModalBuilder()
@@ -67,7 +68,7 @@ module.exports = {
       const channel = member.voice?.channel;
 
       if (!channel) {
-        return interaction.reply({ content: 'You must be in a voice channel to rename it.', ephemeral: true });
+        return interaction.reply({ content: await t(interaction.guildId, 'You must be in a voice channel to rename it.'), ephemeral: true });
       }
 
       const db = getDb();
@@ -77,7 +78,7 @@ module.exports = {
       );
 
       if (!rows.length || rows[0].owner_id !== member.id) {
-        return interaction.reply({ content: 'Only the owner of the channel can change the name.', ephemeral: true });
+        return interaction.reply({ content: await t(interaction.guildId, 'Only the owner of the channel can change the name.'), ephemeral: true });
       }
 
       try {
@@ -86,10 +87,10 @@ module.exports = {
           'UPDATE temp_channels SET name = ? WHERE temp_channel_id = ?', 
           [newName, channel.id]
         );
-        return interaction.reply({ content: `Channel renamed to **${newName}**.`, ephemeral: true });
+        return interaction.reply({ content: await t(interaction.guildId, 'Channel renamed to **{name}**.', { name: newName }), ephemeral: true });
       } catch (error) {
         console.error('Error renaming channel:', error);
-        return interaction.reply({ content: 'An error occurred while renaming the channel.', ephemeral: true });
+        return interaction.reply({ content: await t(interaction.guildId, 'An error occurred while renaming the channel.'), ephemeral: true });
       }
     }
   }

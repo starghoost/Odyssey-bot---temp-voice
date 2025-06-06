@@ -6,6 +6,7 @@
  */
 
 const { SlashCommandBuilder } = require('discord.js');
+const { t } = require('./../../../utils/translator');
 const { getDb } = require('../../../../database/mysql');
 
 module.exports = {
@@ -25,7 +26,7 @@ module.exports = {
 
     // Must be connected to a voice channel
     if (!channel) {
-      return interaction.reply({ content: 'You must be in a voice channel to use this command.', ephemeral: true });
+      return interaction.reply({ content: await t(interaction.guildId, 'You must be in a voice channel to use this command.'), ephemeral: true });
     }
 
     const db = getDb();
@@ -36,17 +37,17 @@ module.exports = {
 
     // Only the owner can execute this action
     if (!row.length || row[0].owner_id !== member.id) {
-      return interaction.reply({ content: 'Only the owner of the channel can deafen users.', ephemeral: true });
+      return interaction.reply({ content: await t(interaction.guildId, 'Only the owner of the channel can deafen users.'), ephemeral: true });
     }
 
     const targetMember = interaction.guild.members.cache.get(targetUser.id);
     if (!targetMember || targetMember.voice.channelId !== channel.id) {
-      return interaction.reply({ content: 'The user is not in your voice channel.', ephemeral: true });
+      return interaction.reply({ content: await t(interaction.guildId, 'The user is not in your voice channel.'), ephemeral: true });
     }
 
     await targetMember.voice.setDeaf(true);
     return interaction.reply({
-      content: `User **${targetUser.tag}** has been deafened.`,
+      content: await t(interaction.guildId, 'User **{user}** has been deafened.', { user: targetUser.tag }),
       ephemeral: true
     });
   }

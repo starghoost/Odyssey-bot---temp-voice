@@ -7,6 +7,7 @@
  */
 
 const { SlashCommandBuilder } = require('discord.js');
+const { t } = require('./../../../utils/translator');
 const { getDb } = require('../../../../database/mysql');
 
 module.exports = {
@@ -40,7 +41,7 @@ module.exports = {
 
     // Check if the user has Discord administrator permissions
     if (!member.permissions.has('Administrator')) {
-      return interaction.reply({ content: 'Only administrators can use this command.', ephemeral: true });
+      return interaction.reply({ content: await t(interaction.guildId, 'Only administrators can use this command.'), ephemeral: true });
     }
 
     const role = interaction.options.getRole('role');
@@ -52,9 +53,9 @@ module.exports = {
         'INSERT IGNORE INTO admin_roles (guild_id, role_id) VALUES (?, ?)',
         [guild.id, role.id]
       );
-      return interaction.reply({ 
-        content: `The role **${role.name}** now has administrative privileges.`, 
-        ephemeral: true 
+      return interaction.reply({
+        content: await t(interaction.guildId, 'The role **{role}** now has administrative privileges.', { role: role.name }),
+        ephemeral: true
       });
     } else {
       // Remove the role from the admin list
@@ -62,9 +63,9 @@ module.exports = {
         'DELETE FROM admin_roles WHERE guild_id = ? AND role_id = ?',
         [guild.id, role.id]
       );
-      return interaction.reply({ 
-        content: `The role **${role.name}** no longer has administrative privileges.`, 
-        ephemeral: true 
+      return interaction.reply({
+        content: await t(interaction.guildId, 'The role **{role}** no longer has administrative privileges.', { role: role.name }),
+        ephemeral: true
       });
     }
   }

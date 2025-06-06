@@ -7,6 +7,7 @@
  */
 
 const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
+const { t } = require('./../../../utils/translator');
 const { getDb } = require('../../../../database/mysql');
 
 module.exports = {
@@ -26,7 +27,7 @@ module.exports = {
 
     // Check if user is in a voice channel
     if (!voiceChannel) {
-      return interaction.reply({ content: 'You must be connected to a voice channel.', ephemeral: true });
+      return interaction.reply({ content: await t(interaction.guildId, 'You must be connected to a voice channel.'), ephemeral: true });
     }
 
     const db = getDb();
@@ -37,19 +38,19 @@ module.exports = {
 
     // Only the owner can kick users
     if (!temp.length || temp[0].owner_id !== member.id) {
-      return interaction.reply({ content: 'Only the owner of the channel can use this command.', ephemeral: true });
+      return interaction.reply({ content: await t(interaction.guildId, 'Only the owner of the channel can use this command.'), ephemeral: true });
     }
 
     const memberToKick = interaction.guild.members.cache.get(userToKick.id);
 
     // Check that the user is in the same voice channel
     if (!memberToKick || memberToKick.voice.channelId !== voiceChannel.id) {
-      return interaction.reply({ content: 'The user is not in your voice channel.', ephemeral: true });
+      return interaction.reply({ content: await t(interaction.guildId, 'The user is not in your voice channel.'), ephemeral: true });
     }
 
     // Check if the user has admin permissions or admin role
     if (memberToKick.permissions.has(PermissionFlagsBits.Administrator)) {
-      return interaction.reply({ content: 'You cannot kick an administrator.', ephemeral: true });
+      return interaction.reply({ content: await t(interaction.guildId, 'You cannot kick an administrator.'), ephemeral: true });
     }
 
     const [roles] = await db.execute(
@@ -61,15 +62,15 @@ module.exports = {
     const hasAdminRole = memberToKick.roles.cache.some(role => adminRoles.includes(role.id));
 
     if (hasAdminRole) {
-      return interaction.reply({ content: 'You cannot kick a user with an administrative role.', ephemeral: true });
+      return interaction.reply({ content: await t(interaction.guildId, 'You cannot kick a user with an administrative role.'), ephemeral: true });
     }
 
     // Disconnect the user
     await memberToKick.voice.disconnect();
 
-    return interaction.reply({ 
-      content: `User **${userToKick.tag}** has been kicked from the channel.`, 
-      ephemeral: true 
+    return interaction.reply({
+      content: await t(interaction.guildId, 'User **{user}** has been kicked from the channel.', { user: userToKick.tag }),
+      ephemeral: true
     });
   }
 };

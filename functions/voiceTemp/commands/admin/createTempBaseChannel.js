@@ -68,9 +68,9 @@ module.exports = {
     );
 
     // Respond to the user with a confirmation message
-    return interaction.reply({ 
-      content: `Base channel **${channel.name}** created. User limit stored in the database: ${limit}.`, 
-      ephemeral: true 
+    return interaction.reply({
+      content: await t(interaction.guildId, 'Base channel **{name}** created. User limit stored in the database: {limit}.', { name: channel.name, limit }),
+      ephemeral: true
     });
   }
 };
