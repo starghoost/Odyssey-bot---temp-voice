@@ -8,6 +8,7 @@
 
 const { SlashCommandBuilder, PermissionsBitField, ChannelType } = require('discord.js');
 const { getDb } = require('../../../../database/mysql');
+const { t } = require('./../../../utils/translator');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -60,9 +61,9 @@ module.exports = {
     }
 
     // Confirm the deletion to the user
-    return interaction.reply({ 
-      content: `The base channel **${channel.name}** has been deleted.`, 
-      ephemeral: true 
+    return interaction.reply({
+      content: await t(interaction.guildId, 'The base channel **{name}** has been deleted.', { name: channel.name }),
+      ephemeral: true
     });
   }
 };

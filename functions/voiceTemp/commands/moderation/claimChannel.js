@@ -6,6 +6,7 @@
  */
 
 const { SlashCommandBuilder } = require('discord.js');
+const { t } = require('./../../../utils/translator');
 const { getDb } = require('../../../../database/mysql');
 
 module.exports = {
@@ -19,7 +20,7 @@ module.exports = {
 
     // Ensure the user is connected to a voice channel
     if (!voiceChannel) {
-      return interaction.reply({ content: 'You must be connected to a voice channel to claim it.', ephemeral: true });
+      return interaction.reply({ content: await t(interaction.guildId, 'You must be connected to a voice channel to claim it.'), ephemeral: true });
     }
 
     const db = getDb();
@@ -35,12 +36,12 @@ module.exports = {
 
       // Already the owner
       if (ownerId === member.id) {
-        return interaction.reply({ content: 'You already own this channel.', ephemeral: true });
+        return interaction.reply({ content: await t(interaction.guildId, 'You already own this channel.'), ephemeral: true });
       }
 
       // Already claimed by someone else
       if (ownerId !== null) {
-        return interaction.reply({ content: 'This channel has already been claimed by another user.', ephemeral: true });
+        return interaction.reply({ content: await t(interaction.guildId, 'This channel has already been claimed by another user.'), ephemeral: true });
       }
 
       // Claim it
@@ -49,7 +50,7 @@ module.exports = {
         [member.id, member.user.username, voiceChannel.id]
       );
 
-      return interaction.reply({ content: `You are now the owner of **${voiceChannel.name}**.`, ephemeral: true });
+      return interaction.reply({ content: await t(interaction.guildId, 'You are now the owner of **{name}**.', { name: voiceChannel.name }), ephemeral: true });
     }
 
     // Insert a new entry if the channel isn't tracked yet
@@ -60,6 +61,6 @@ module.exports = {
       [voiceChannel.id, interaction.guild.id, member.id, member.user.username, voiceChannel.name]
     );
 
-    return interaction.reply({ content: `You are now the owner of **${voiceChannel.name}**.`, ephemeral: true });
+    return interaction.reply({ content: await t(interaction.guildId, 'You are now the owner of **{name}**.', { name: voiceChannel.name }), ephemeral: true });
   }
 };

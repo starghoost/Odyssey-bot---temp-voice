@@ -27,10 +27,14 @@ functions/
 │   │   └── utility/           # Helper commands like help and search
 │   ├── events/                # Voice state event listeners
 │   └── ...                    # Utility handlers (autoDelete, claim, etc.)
+lang/
+├── tempovoice/               # Translation files for the temp voice module
+│   ├── en.json
+│   └── es.json
 database/
 ├── mysql.js                   # MySQL connection and schema loader
 ├── schema.sql                 # Database schema definition
-.env                           # Environment variables (not committed)
+.env.example                  # Example environment variables
 ```
 
 ---
@@ -40,8 +44,8 @@ database/
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/starghoost/Odyssey-bot---temp-voice.git
-cd your-repo-name
+ git clone https://github.com/starghoost/Odyssey-bot---temp-voice.git
+ cd your-repo-name
 ```
 
 2. Install dependencies:
@@ -50,13 +54,20 @@ cd your-repo-name
 npm install
 ```
 
-3. Import the database schema into your MySQL server:
+3. Copy the example environment file and update it with your credentials:
+
+```bash
+cp .env.example .env
+# then edit .env
+```
+
+4. Import the database schema into your MySQL server:
 
 ```bash
 mysql -u root -p < database/schema.sql
 ```
 
-4. Start the bot:
+5. Start the bot:
 
 ```bash
 node index.js

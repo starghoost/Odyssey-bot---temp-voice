@@ -55,7 +55,8 @@ async function connectToDatabase() {
       'temp_channels',
       'channel_bans',
       'admin_roles',
-      'channel_whitelist'
+      'channel_whitelist',
+      'guild_settings'
     ];
 
     // Retrieve existing tables and identify missing ones
@@ -78,7 +79,7 @@ async function connectToDatabase() {
         );
 
       for (const stmt of statements) {
-        const match = stmt.match(/CREATE TABLE\s+(\w+)/i);
+        const match = stmt.match(/CREATE TABLE(?: IF NOT EXISTS)?\s+(\w+)/i);
         if (match) {
           const tableName = match[1].toLowerCase();
           if (missingTables.includes(tableName)) {

@@ -16,6 +16,7 @@ const {
 } = require('discord.js');
 
 const { getDb } = require('../../../../database/mysql');
+const { t } = require('./../../../utils/translator');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -77,7 +78,7 @@ module.exports = {
     // Build the response embed
     const embed = new EmbedBuilder()
       .setTitle('🎙 Temporary Channel Created')
-      .setDescription(`The channel **${name}** has been created.`)
+      .setDescription(await t(interaction.guildId, 'The channel **{name}** has been created.', { name }))
       .addFields(
         { name: 'Type', value: isPrivate ? '🔒 Private' : '🌐 Public', inline: true },
         { name: 'User Limit', value: `${limit}`, inline: true },

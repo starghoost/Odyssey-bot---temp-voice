@@ -16,6 +16,7 @@ const {
 } = require('discord.js');
 
 const { getDb } = require('../../../../database/mysql');
+const { t } = require('../../../utils/translator');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -39,7 +40,7 @@ module.exports = {
 
       // If user is not connected to a voice channel
       if (!member || !member.voice.channel) {
-        return interaction.reply({ content: '🔇 The user is not connected to any voice channel.', ephemeral: true });
+        return interaction.reply({ content: await t(interaction.guildId, '🔇 The user is not connected to any voice channel.'), ephemeral: true });
       }
 
       const channel = member.voice.channel;
@@ -52,7 +53,7 @@ module.exports = {
 
       if (bans.length > 0) {
         return interaction.reply({
-          content: '🚫 You cannot access this channel because you have been blocked by its owner.',
+          content: await t(interaction.guildId, '🚫 You cannot access this channel because you have been blocked by its owner.'),
           ephemeral: true
         });
       }

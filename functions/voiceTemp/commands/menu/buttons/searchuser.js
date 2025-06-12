@@ -9,6 +9,7 @@
 const { UserSelectMenuBuilder,ActionRowBuilder,EmbedBuilder,ButtonBuilder,ButtonStyle,PermissionsBitField} = require('discord.js');
 
 const { getDb } = require('../../../../../database/mysql');
+const { t } = require('./../../../../utils/translator');
 
 module.exports = {
   id: ['search_user', 'select_user_channel'],

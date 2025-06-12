@@ -6,6 +6,7 @@
  */
 
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { t } = require('./../../utils/translator');
 const { getDb } = require('../../../database/mysql');
 
 module.exports = {
@@ -28,7 +29,7 @@ module.exports = {
       const hasAdminRole = member.roles.cache.some(role => adminRoleIDs.includes(role.id));
 
       if (!hasAdminRole) {
-        return interaction.reply({ content: 'You do not have permission to use this command.', ephemeral: true });
+        return interaction.reply({ content: await t(interaction.guildId, 'You do not have permission to use this command.'), ephemeral: true });
       }
     }
 
@@ -39,7 +40,7 @@ module.exports = {
     );
 
     if (channels.length === 0) {
-      return interaction.reply({ content: 'There are currently no active temporary channels.', ephemeral: true });
+      return interaction.reply({ content: await t(interaction.guildId, 'There are currently no active temporary channels.'), ephemeral: true });
     }
 
     // Build the response embed

@@ -7,6 +7,7 @@
 
 const { SlashCommandBuilder } = require('discord.js');
 const { getDb } = require('../../../../database/mysql');
+const { t } = require('./../../../utils/translator');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -60,9 +61,9 @@ module.exports = {
       [newName, voiceChannel.id]
     );
 
-    return interaction.reply({ 
-      content: `Channel renamed to **${newName}**.`, 
-      ephemeral: true 
+    return interaction.reply({
+      content: await t(interaction.guildId, 'Channel renamed to **{name}**.', { name: newName }),
+      ephemeral: true
     });
   }
 };
